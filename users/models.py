@@ -3,32 +3,31 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email,  password=None):
-        """
-        Creates and saves a User with the given email, date of
-        birth and password.
-        """
+    def create_user(self, email, name, gender, age, introduction, password=None):
         if not email:
             raise ValueError("Users must have an email address")
 
         user = self.model(
-            email=self.normalize_email(email),
-
+            email = self.normalize_email(email),
+            name = name,
+            gender = gender,
+            age = age,
+            introduction = introduction,
         )
 
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email,  password=None):
-        """
-        Creates and saves a superuser with the given email, date of
-        birth and password.
-        """
+    def create_superuser(self, email, name, gender, age, introduction, password=None):
+        # email과 패스워드만 입력해도 되지 않나?
         user = self.create_user(
             email,
-            password=password,
-
+            password = password,
+            name = name,
+            gender = gender,
+            age = age,
+            introduction = introduction,
         )
         user.is_admin = True
         user.save(using=self._db)
@@ -37,18 +36,26 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser):
     email = models.EmailField(
-        verbose_name="email address",
+        verbose_name="이메일",
         max_length=255,
         unique=True,
     )
-    
+    name = models.CharField(max_length=50, verbose_name='이름')
+    GENDER_CHOICES=(
+        ("M", "Male"),
+        ("F", "Female"),
+        ("O", "Other"),
+    )
+    gender = models.CharField(choices=GENDER_CHOICES, max_length=1,verbose_name='성별')
+    age = models.PositiveIntegerField(verbose_name='나이')
+    introduction = models.TextField(max_length=200, blank=True, verbose_name='자기소개')
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 
     objects = UserManager()
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ["name", "gender", "age", "introduction"]
 
     def __str__(self):
         return self.email
