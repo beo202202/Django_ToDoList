@@ -4,7 +4,7 @@ from todo_lists.models import TodoList
 
 
 class TodoListAdmin(admin.ModelAdmin):
-    list_display = ('user','title','is_complate','created_at','updated_at','completion_at')
+    list_display = ('title','user','is_complate','created_at','updated_at','completion_at')
     
     fieldsets = (
         ('Todo', {
