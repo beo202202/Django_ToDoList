@@ -64,26 +64,46 @@ class LoginUserTest(APITestCase):
             "",
             "testpassword"
         )
+        self.token = self.get_token()
+
+    def get_token(self):
+        token = self.client.post(reverse('token_obtain_pair'), self.data).data
+        self.access_token = token['access']
+        # print(f"{self.access_token=}")
+        self.refresh_token = token['refresh']
+        # print(f"{self.refresh_token=}")
     
     # 과거 오류 발생지 (=왜 오류뜨는지 원인 못 찾음.)
     # >> 단순 철자 문제 serializer.py > serializers.py
-    # 토큰 받기
+    # 이 코드를 굳이 실행 해야하나?ㅠ 위와 같은데?
     def test_login(self):
         response = self.client.post(reverse('token_obtain_pair'), self.data)
         # print(response.data["access"])
         self.assertEqual(response.status_code, 200)
 
+    # def test_logout(self):
+    #     # response = self.client.post(reverse('logout_view'), self.data)
+    #     response = self.client.put(
+    #         path=reverse("logout_view"),
+    #         data=self.data,
+    #         HTTP_AUTHORIZATION = f"Bearer {self.access_token}"
+    #     )
+    #     print(f"{self.access_token=}")
+    #     self.assertEqual(response.status_code, 202)
+
+
     def test_post_user_refresh(self):
-        refresh_token = self.client.post(reverse('token_obtain_pair'), self.data).data['refresh']
-        response = self.client.post(reverse("token_refresh"), {"refresh":refresh_token})
-
-        # 밑과 같은 방식으로는 안되나?
-        # response = self.client.post(
-        #     path=reverse("token_refresh"),
-        #     HTTP_AUTHORIZATION = f"Bearer {refresh_token}"
-        # )
-        print(response.data["access"])
+        response = self.client.post(reverse("token_refresh"), {"refresh":self.refresh_token})
+        # print(response.data)
+        # print(self.user.id)
         self.assertEqual(response.status_code, 200)
-        # self.assertEqual(response.data['email'], self.data['email'])
 
+    # 아직 해결 못함.
+    # def test_put__user_update(self):
+    #     response = self.client.put(
+    #         path=reverse("user_detail_view", kwargs={"user_id": self.user.id}),
+    #         data=self.data,
+    #         HTTP_AUTHORIZATION = f"Bearer {self.access_token}"
+    #     )
+    #     self.assertEqual(response.status_code, 200)
 # 추후 로그아웃, 수정, 회원 탈퇴 테스트도 해야한다.
