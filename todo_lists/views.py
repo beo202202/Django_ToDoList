@@ -34,9 +34,7 @@ class TodoListDetailView(APIView):
         return get_object_or_404(TodoList, pk=pk)
 
     def get(self, request, todolist_id):
-        #
         todolist = self.get_object(todolist_id)
-        #
         serializer = TodoListSerializer(todolist)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
