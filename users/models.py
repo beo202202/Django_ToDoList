@@ -36,21 +36,21 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser):
     email = models.EmailField(
-        verbose_name="이메일",
+        "이메일",
         max_length=255,
         unique=True,
     )
-    name = models.CharField(max_length=50, verbose_name='이름')
+    name = models.CharField("이름", max_length=50)
     GENDER_CHOICES=(
         ("M", "Male"),
         ("F", "Female"),
         ("O", "Other"),
     )
-    gender = models.CharField(choices=GENDER_CHOICES, max_length=1,verbose_name='성별')
-    age = models.PositiveIntegerField(verbose_name='나이')
-    introduction = models.TextField(max_length=200, blank=True, verbose_name='자기소개')
-    is_active = models.BooleanField(default=True)
-    is_admin = models.BooleanField(default=False)
+    gender = models.CharField("성별", choices=GENDER_CHOICES, max_length=1)
+    age = models.PositiveIntegerField("나이")
+    introduction = models.TextField("자기 소개", max_length=200, blank=True)
+    is_active = models.BooleanField("활성화 여부", default=True)
+    is_admin = models.BooleanField("관리자 여부", default=False)
 
     objects = UserManager()
 

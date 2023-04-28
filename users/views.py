@@ -23,9 +23,12 @@ class UserDetailView(APIView):
     # 로그인 되어 있는지만 확인하는 것 같은데?
     permission_classes = [permissions.IsAuthenticated]
 
+    def get_object(self, user_id):
+        return get_object_or_404(User, id=user_id)
+
     # 회원 수정
     def put(self, request, user_id):
-        user = get_object_or_404(User, id=user_id)
+        user = self.get_object(user_id)
         # print(f"{request.user=}")
         # print(f"{user=}")
         # 왜 users.user 하면 오류가 발생할까? 에 대해 생각을 하였다.
@@ -40,7 +43,7 @@ class UserDetailView(APIView):
             return Response({"message":"권한이 없습니다!"}, status=status.HTTP_403_FORBIDDEN)
 
     def delete(self, request, user_id):
-        user = get_object_or_404(User, id=user_id)
+        user = self.get_object(user_id)
         if request.user == user:
             user.delete()
             return Response({"message":"삭제 완료!"}, status=status.HTTP_204_NO_CONTENT)
