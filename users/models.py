@@ -53,6 +53,8 @@ class User(AbstractBaseUser):
     is_admin = models.BooleanField("관리자 여부", default=False)
 
     objects = UserManager()
+    class Meta:
+        db_table = "user"
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["name", "gender", "age", "introduction"]
