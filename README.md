@@ -19,8 +19,6 @@
 <li>작성자 본인만 조회, 수정, 삭제 가능</li>
 <li>JWT 방식 : accesss 토큰 payload 정보(user email, name, gender, age)</li>
 <br>
-<h3>프론트 추가중</h4>
-<br>
 <h4>ERD Cloud</h4>
 
 ![image](https://user-images.githubusercontent.com/125543130/235286201-ff46c992-b503-4e68-a5a7-1a57169c31d8.png)
