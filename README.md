@@ -18,6 +18,7 @@
 <h4>추가</h4>
 <li>작성자 본인만 조회, 수정, 삭제 가능</li>
 <li>JWT 방식 : accesss 토큰 payload 정보(user email, name, gender, age)</li>
+<li>test코드: 로그인, 로그아웃</li>
 <br>
 <h4>ERD Cloud</h4>
 
